@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Surprise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Comic Neue', cursive;
+      background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+      background-size: 200% 200%;
+      animation: gradientBG 15s ease infinite;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .hidden {
+      display: none;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      animation: fadeIn 1s ease-out;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px) rotateX(5deg);
+    }
+    h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+    .character {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+    h1 {
+      font-size: 2.5em;
+    }
+    input {
+      padding: 12px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      border: none;
+      margin-top: 1rem;
+      width: 80%;
+    }
+    button {
+      padding: 15px 30px;
+      margin-top: 1.2rem;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+      background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .falling-flowers {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .flower {
+      position: fixed;
+      font-size: 24px;
+      animation: fallFlower 8s linear infinite;
+      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9));
+      text-shadow: 0 0 10px rgba(255, 192, 203, 0.8);
+    }
+    @keyframes fallFlower {
+      0% {
+        transform: translateY(-10%) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    @keyframes oldDance {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+    .flower {
+      position: absolute;
+      bottom: -50px;
+      font-size: 24px;
+      animation: floatUp 6s linear infinite;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+      opacity: 0.8;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>  <div id="email-card" class="card">
+    <h1>You've Got a Surprise Email!</h1>
+    <button id="open-btn">Open Email</button>
+  </div>  <div id="name-card" class="card hidden">
+    <h1>Masukkan Nama Kamu</h1>
+    <input type="text" id="name-input" placeholder="Namamu di sini..." />
+    <button onclick="startSurprise()">Lanjut</button>
+  </div>  <div id="surprise-card" class="card hidden">
+      <div class="falling-flowers" id="fallingFlowers"></div>
+      <h1>Selamat Ulang Tahun ke-17 <span id="name-placeholder"></span>! 🎉</h1>
+      <p>Di umur yang ke-17 ini, semoga kamu:</p>
+      <p>🌟 Selalu diberikan kesehatan dan kebahagiaan</p>
+      <p>💫 Sukses dalam pendidikan dan cita-citamu</p>
+      <p>💝 Makin dewasa dan bijaksana dalam mengambil keputusan</p>
+      <p>✨ Selalu dilindungi dan diberikan yang terbaik</p>
+      <p>Selamat sweet seventeen! Semoga semua impianmu tercapai!</p>
+      <button onclick="showGiftQuestion()">Lanjut</button>
+    </div>  <div id="question-card" class="card hidden">
+    <h1>Mau hadiah apa nih? 🎁</h1>
+    <input type="text" id="gift-input" placeholder="Tulis hadiahmu di sini..." style="margin: 10px 0;">
+    <p style="font-size: 0.9em; margin-top: 10px;">Setelah menulis hadiah, hubungi admin di WhatsApp ya!</p>
+    <button onclick="submitGiftAndContact()">Kirim</button>
+  </div>  <div id="response-card" class="card hidden">
+    <h1 id="response-text"></h1>
+  </div>  <script>
+    document.getElementById("open-btn").addEventListener("click", function () {
+      document.getElementById('email-card').classList.add('hidden');
+      document.getElementById('name-card').classList.remove('hidden');
+    });
+
+    // Add background music
+    const bgMusic = new Audio('PLACEHOLDER_SWEET_SEVENTEEN_SONG_URL'); // Replace with actual URL
+    bgMusic.loop = true;
+    bgMusic.volume = 0.5;
+
+    function createFlower() {
+      const flower = document.createElement('div');
+      flower.className = 'flower';
+      flower.textContent = Math.random() > 0.5 ? '🌸' : '🌺';
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = (Math.random() * 3 + 5) + 's';
+      flower.style.opacity = '0';
+      document.getElementById('fallingFlowers').appendChild(flower);
+
+      flower.addEventListener('animationend', () => {
+        flower.remove();
+      });
+    }
+
+    function startSurprise() {
+      bgMusic.play();
+      const name = document.getElementById('name-input').value.trim();
+      if (!name) {
+        alert("Isi namanya dulu dong!");
+        return;
+      }
+      document.getElementById('name-card').classList.add('hidden');
+      document.getElementById('surprise-card').classList.remove('hidden');
+      document.getElementById('name-placeholder').textContent = name;
+
+      // Create falling flowers
+      setInterval(createFlower, 300);
+      trees.forEach(tree => {
+        // Create branches
+        setTimeout(() => {
+          for(let i = 0; i < 6; i++) {
+            const branch = document.createElement('div');
+            branch.className = 'branch';
+            branch.style.top = `${50 + i * 30}px`;
+            branch.style.left = tree.classList.contains('tree-left') ? '20px' : '0px';
+            branch.style.transform = `rotate(${tree.classList.contains('tree-left') ? '30' : '-30'}deg)`;
+            branch.style.animationDelay = `${1 + (i * 0.1)}s`;
+            branch.style.boxShadow = '0 0 8px rgba(160, 82, 45, 0.4)';
+            tree.appendChild(branch);
+
+            // Add blossoms to each branch
+            setTimeout(() => {
+              for(let j = 0; j < 3; j++) {
+                const blossom = document.createElement('div');
+                blossom.className = 'blossom';
+                blossom.textContent = '🌸';
+                blossom.style.left = `${j * 15}px`;
+                blossom.style.top = '-10px';
+                blossom.style.animationDelay = `${1.2 + (i * 0.1) + (j * 0.05)}s`;
+                branch.appendChild(blossom);
+              }
+            }, 1000 + (i * 100));
+          }
+        }, 2000);
+      });
+    }
+
+    function showGiftQuestion() {
+      document.getElementById('surprise-card').classList.add('hidden');
+      document.getElementById('question-card').classList.remove('hidden');
+    }
+
+    function submitGiftAndContact() {
+      const gift = document.getElementById('gift-input').value.trim();
+      if (!gift) {
+        alert('Tulis dulu hadiahmu!');
+        return;
+      }
+      document.getElementById('question-card').classList.add('hidden');
+      document.getElementById('response-card').classList.remove('hidden');
+      document.getElementById('response-text').innerHTML = `Wah ${gift}? Silahkan hubungi admin di WhatsApp ya! 😊<br>📱 <a href="https://wa.me/6281775789199" target="_blank" style="color: #4CAF50; text-decoration: none;">Klik di sini untuk WhatsApp</a>`;
+    }
+  </script></body>
+</html>
